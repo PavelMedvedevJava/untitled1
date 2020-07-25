@@ -3,10 +3,13 @@ package company.repo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import company.model.Develloper;
 import company.model.Skill;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +39,17 @@ public class SkillRepositoryImpl implements SkillRepository{
 
     @Override
     public List<Skill> getAll() {
+
+
+            if (!Files.exists(Paths.get("skills.json"))) {
+                try {
+                    Files.createFile(Paths.get("skills.json"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
         Reader reader = null;
         try {
             reader = new FileReader("skills.json");

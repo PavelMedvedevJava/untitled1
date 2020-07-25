@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import company.model.Develloper;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +67,19 @@ delete(develloper.getId());
 
 @Override
     public List<Develloper> getAll()  {
-        Reader reader = null;
+
+    if (!Files.exists(Paths.get("developer.json"))) {
+        try {
+            Files.createFile(Paths.get("developer.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    Reader reader = null;
         try {
             reader = new FileReader("developer.json");
         } catch (FileNotFoundException e) {
