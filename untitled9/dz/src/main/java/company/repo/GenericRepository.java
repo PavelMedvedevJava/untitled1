@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface GenericRepository<T,ID> {
 
-    void create(T t);
+    T create(T t);
 
-    void update(T t);
+    T update(T t);
 
     void delete(ID id);
 

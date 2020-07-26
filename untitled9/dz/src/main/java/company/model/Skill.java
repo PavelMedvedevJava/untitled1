@@ -5,35 +5,22 @@ import java.util.Objects;
 
 public class Skill  implements Serializable {
 
-    private long idDev;
-
     private String skil;
 
     private long id;
 
-
-
-
-    public Skill(String skil, long id) {
+    public Skill(String skil) {
 
         this.skil = skil;
-        this.id=id;
+
     }
 
-    public Skill(String skill, long idcounter, long devId) {
+    public Skill(String skill, long id) {
         this.skil = skill;
-        this.id=idcounter;
-        this.idDev=devId;
+        this.id=id;
+
     }
 
-
-    public long getIdDev() {
-        return idDev;
-    }
-
-    public void setIdDev(long idDev) {
-        this.idDev = idDev;
-    }
 
     public long getId() {
         return id;

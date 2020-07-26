@@ -1,23 +1,40 @@
 package company.model;
 
+import company.view.SkillView;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
-public class Develloper implements Serializable {
+public class Developer implements Serializable {
+
 
     private long id;
 
-    private  String name ,lastName;
+    private  String name;
 
-  //  private  transient  Set<Skill> skills=new HashSet<>();
+    private String lastName;
 
-   private transient  Account account;
+  private   Set<Skill> skills=new HashSet<>();
 
-    public Develloper(long id,String name, String lastName) {
+   private   Account account;
+
+    public Developer(long id, String name, String lastName, Set<Skill> skills, Account account) {
         this.name = name;
         this.lastName = lastName;
         this.id=id;
+    }
+
+
+    public Developer() {
+
+    }
+
+    public Developer(String name, String lastName) {
+        this.name = name;
+        this.lastName = lastName;
     }
 
     public long getId() {
@@ -34,18 +51,6 @@ public class Develloper implements Serializable {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-//
-//    public void addSkills(Skill skill) {
-//        skills.add(skill);
-//    }
-//
-//    public Set<Skill> getSkills() {
-//        return skills;
-//    }
-
-
-    public Develloper() {
     }
 
 
@@ -65,11 +70,23 @@ public class Develloper implements Serializable {
         this.lastName = lastName;
     }
 
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public void setSkill(Skill skill) {
+        skills.add(skill);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Develloper that = (Develloper) o;
+        Developer that = (Developer) o;
         return id == that.id &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(lastName, that.lastName);
@@ -82,7 +99,7 @@ public class Develloper implements Serializable {
 
     @Override
     public String toString() {
-        return "Develloper (" +
+        return "Developer (" +
                 "id=" + id +
                 ", name= " + name  +
                 "  lastName= " + lastName  +

@@ -1,7 +1,7 @@
 package company.controller;
 
-import company.model.Develloper;
-import company.repo.DeveloperRepositoryImpl;
+import company.model.Developer;
+import company.repo.repoImpl.DeveloperRepositoryImpl;
 
 import java.util.Comparator;
 import java.util.List;
@@ -9,36 +9,30 @@ import java.util.Optional;
 
 public class DeveloperController {
 
-    private Develloper dev;
+    private Developer dev;
 
     private long idcounter = 1;
 
     private DeveloperRepositoryImpl developerRepository = new DeveloperRepositoryImpl();
 
-    public List<Develloper> getAllDev() {
+    public List<Developer> getAllDev() {
         return developerRepository.getAll();
     }
 
-    public void addDeveloper(String name, String lastName) {
+    public Developer addDeveloper(Developer developer) {
 
-        if (!getAllDev().isEmpty() && getAllDev() != null) {
-            idcounter = getAllDev().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-        }
-
-        dev = new Develloper(idcounter, name, lastName);
-        developerRepository.create(dev);
-        idcounter++;
+        return developerRepository.create(developer);
     }
 
-    public void deletDevelloper(long id) {
+    public void deletDeveloper(long id) {
         developerRepository.delete(id);
     }
 
-    public void apdateDevelloper(long id, String newName, String newLastName) {
-        developerRepository.update(new Develloper(id, newName, newLastName));
+    public Developer apdateDeveloper(Developer developer) {
+       return developerRepository.update(developer);
     }
 
-    public Optional<Develloper> getDevelloper(long id) {
+    public Optional<Developer> getDeveloper(long id) {
         return developerRepository.read(id);
     }
 

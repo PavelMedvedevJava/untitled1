@@ -49,16 +49,10 @@ public class Main {
 
 //Когда нибудь мне будет жутко стыдно за этот код , а пока я очень хочу спать )
             while (true) {
-                System.out.println("                         Choose your destiny"+System.lineSeparator()+"New developer pres 1" +System.lineSeparator()+"loock all developers - press 2  "
-                        +System.lineSeparator()+ "delete developer press 3 " +System.lineSeparator()+
-                        "create developer pres 4" +System.lineSeparator()+
-                        "view developer press 5" +System.lineSeparator()+
-                        "add skill to developer press  6"+System.lineSeparator()+"get all skills press 7"
-                        +System.lineSeparator()+"delete skill press 8"
-                        +System.lineSeparator()+"create skill press 9"
-                        +System.lineSeparator()+"add account status press 10"
-                        +System.lineSeparator()+"create account status press 11"
-                        +System.lineSeparator()+ "exit program pres 0");
+                System.out.println(" Choose your destiny"+System.lineSeparator()+"New developer pres 1"
+                        +System.lineSeparator()+"loock all developers - press 2  "
+                         +System.lineSeparator()+
+                        "create developer pres 3" +System.lineSeparator());
 
                 String read = reader.readLine();
                 switch (read) {
@@ -69,37 +63,7 @@ public class Main {
                         develloperVIew.showAllDevellopers();
                         break;
                     case "3":
-                        try {
-                            develloperVIew.deleteDeveloper();
-                        } catch (IOException r) {
-                            System.out.println("And you need to enter numbers, do you understand the numbers?");
-                        }
-                        break;
-                    case "4":
                         develloperVIew.createDeveloper();
-                        break;
-                    case "5":
-                        System.out.println(develloperVIew.viewDeveloper());
-
-                        break;
-                    case "6":
-                        skillView.addNewSkill(develloperVIew.viewDeveloper());
-                        break;
-                    case "7":
-                        skillView.getAllSkills(develloperVIew.viewDeveloper());
-
-                        break;
-                    case "8":
-                        skillView.deleteSkill(develloperVIew.viewDeveloper());
-                        break;
-                    case "9":
-                        skillView.createSkill(develloperVIew.viewDeveloper());
-                        break;
-                    case "10":
-                       accountView.addAccount(develloperVIew.viewDeveloper());
-                        break;
-                    case "11":
-                        accountView.createAccount(develloperVIew.viewDeveloper());
                         break;
                     case "0":
 

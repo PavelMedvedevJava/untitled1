@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 public class Account  implements Serializable {
 
-    private long devId;
+
 
     private long id;
 
  private   AccountStatus accountStatus;
 
-    public Account(AccountStatus accountStatus, long devId, long id) {
-        this.devId=devId;
+    public Account(AccountStatus accountStatus, long id) {
+
         this.accountStatus = accountStatus;
         this.id=id;
     }
 
     public long getDevId() {
-        return devId;
+        return id;
     }
 
     public void setDevId(long devId) {
-        this.devId = devId;
+        this.id = devId;
     }
 
     public long getId() {
@@ -32,8 +32,8 @@ public class Account  implements Serializable {
         this.id = id;
     }
 
-    public Account(AccountStatus accountStatus,long devId) {
-        this.devId=devId;
+    public Account(AccountStatus accountStatus) {
+
         this.accountStatus = accountStatus;
     }
 

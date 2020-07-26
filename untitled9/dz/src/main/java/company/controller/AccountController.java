@@ -2,7 +2,7 @@ package company.controller;
 
 import company.model.Account;
 import company.model.AccountStatus;
-import company.repo.AccountRepositoryImpl;
+import company.repo.repoImpl.AccountRepositoryImpl;
 
 
 import java.util.Comparator;
@@ -20,22 +20,17 @@ public class AccountController {
         return accountRepository.getAll();
     }
 
-    public void addAccount(AccountStatus accountStatus  , long devId) {
+    public Account addAccount(Account account) {
 
-        if (getAllAccount() != null) {
-            idcounter = getAllAccount().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-        }
-
-        accountRepository.create(new Account(accountStatus,devId,idcounter));
-        idcounter++;
+        return accountRepository.create(account);
     }
 
     public void deletAccount(long id) {
         accountRepository.delete(id);
     }
 
-    public void apdateAccount(AccountStatus accountStatus  , long devId,long id) {
-        accountRepository.update(new Account(accountStatus,devId,id));
+    public Account apdateAccount(AccountStatus accountStatus  , long id) {
+        return  accountRepository.update(new Account(accountStatus,id));
     }
 
     public Optional<Account> getAccount(long id ) {

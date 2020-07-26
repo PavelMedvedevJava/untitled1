@@ -1,69 +1,85 @@
 package company.view;
 
 import company.controller.SkillController;
-import company.model.Develloper;
+import company.model.Skill;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Set;
 
 public class SkillView {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private SkillController skillController = new SkillController();
 
-    public  void addNewSkill(Develloper develloper) throws IOException {
+    public Skill addNewSkill() {
 
-        String skill ;
+        String skillStr = "";
 
-        while (!false) {
-
-
-            System.out.println("Write skill developer ");
-            skill = reader.readLine();
+            while (!false) {
 
 
-            if (!(skill.length() <= 2)&&!(skill.length() <= 2)) {
-                skillController.addSkill(skill,develloper.getId());
-                break;
+                System.out.println("Write skill developer ");
+                try {
+                    skillStr = reader.readLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (!(skillStr.length() <= 2) && !(skillStr.length() <= 2)) {
+                    return skillController.addSkill(new Skill(skillStr));
+                }
+            }
+
+    }
+
+    public List<Skill> getAllSkills() {
+       return skillController.getAllSkill();
+
+
+    }
+
+    public long deleteSkill(Set<Skill> skillSet) {
+        skillSet.forEach(System.out::println);
+        while (true) {
+            System.out.println("Please indicate the skill you want to delete");
+            try {
+                long idForDelete = Integer.parseInt(reader.readLine());
+                System.out.println(idForDelete);
+                if ((skillSet.stream().filter(x -> x.getId() == idForDelete).findFirst().orElse(null)) == null) {
+                    System.out.println("This skill does not exist please enter again");
+                } else {
+                    skillController.deletSkill(idForDelete);
+                    return idForDelete;
+                }
+
+            } catch (Exception e) {
             }
         }
-
     }
 
-    public void getAllSkills(Develloper develloper) {
-        skillController.getAllSkill().stream().filter(x->x.getIdDev()==develloper.getId()).forEach(System.out::println);
+    public Skill createSkill(Skill skill)  {
 
+        String newSkill = "";
 
-    }
+        while (true) {
 
-    public void deleteSkill(Develloper develloper) throws IOException {
-        getAllSkills(develloper);
-
-        System.out.println("Please indicate the skill you want to delete");
-        int idForDelete = Integer.parseInt(reader.readLine());
-        if (idForDelete > skillController.getAllSkill().size()) {
-            System.out.println("There is no such developer");
-        } else {
-            skillController.deletSkill(idForDelete);
-        }
-
-    }
-
-    public void createSkill(Develloper develloper) throws IOException {
-        getAllSkills(develloper);
-
-        System.out.println("Please indicate the skill you want to create");
-        int idForCreate = Integer.parseInt(reader.readLine());
-        if (idForCreate > skillController.getAllSkill().size()) {
-            System.out.println("There is no such developer");
-        } else {
             System.out.println("Write new skill developer");
-            String newSkill = reader.readLine();
-            skillController.apdateSkill(idForCreate,newSkill,develloper.getId());
+
+            try {
+                newSkill = reader.readLine();
+                if (newSkill != "") {
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
-
-
-
+skill.setSkil(newSkill);
+       return skillController.apdateSkill(skill);
     }
 }
 
