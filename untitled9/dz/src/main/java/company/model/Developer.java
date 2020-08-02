@@ -1,6 +1,6 @@
 package company.model;
 
-import company.view.SkillView;
+
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -25,6 +25,8 @@ public class Developer implements Serializable {
         this.name = name;
         this.lastName = lastName;
         this.id=id;
+        this.skills = skills;
+        this.account = account;
     }
 
 
@@ -99,12 +101,12 @@ public class Developer implements Serializable {
 
     @Override
     public String toString() {
-        return "Developer (" +
+        return "Developer{" +
                 "id=" + id +
-                ", name= " + name  +
-                "  lastName= " + lastName  +
-                "   "+account+
-
-                ')';
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", skills=" + skills +
+                ", account=" + account +
+                '}';
     }
 }

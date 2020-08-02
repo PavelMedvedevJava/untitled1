@@ -3,8 +3,9 @@ package company.controller;
 import company.model.Developer;
 import company.repo.repoImpl.DeveloperRepositoryImpl;
 
-import java.util.Comparator;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class DeveloperController {
@@ -33,7 +34,7 @@ public class DeveloperController {
     }
 
     public Optional<Developer> getDeveloper(long id) {
-        return developerRepository.read(id);
+        return Objects.requireNonNull(developerRepository.read(id));
     }
 
 }

@@ -11,26 +11,24 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SkillRepositoryImpl implements SkillRepository {
 
     private long idcounter = 1;
 
-    private Path filePath = Paths.get("skills.json");
+    private Path filePath = Paths.get("dz\\src\\main\\resources\\skills.json");
 
-    private final String fileName = "skills.json";
+    private final String fileName = "dz\\src\\main\\resources\\skills.json";
 
     private List<Skill> listOfSkills = new ArrayList<>();
 
 
     private List<Skill> getAllSkill() {
-        if (!Files.exists(Paths.get(fileName))) {
+        if (!Files.exists(filePath)) {
+
             try {
-                Files.createFile(Paths.get(fileName));
+                Files.createFile(filePath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -125,10 +123,11 @@ public class SkillRepositoryImpl implements SkillRepository {
         }
     }
 
-    //Этот гребанный метод не работает и я хз почему ;(
+
     @Override
     public Optional<Skill> read(Long id) {
-        return listOfSkills.stream().filter(x -> x.getId() == id).findFirst();
+        return Objects.requireNonNull(getAllSkill().stream().filter(x -> x.getId() == id).findFirst());
+
     }
 
 

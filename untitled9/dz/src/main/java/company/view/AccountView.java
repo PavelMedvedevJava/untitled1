@@ -3,7 +3,7 @@ package company.view;
 import company.controller.AccountController;
 import company.model.Account;
 import company.model.AccountStatus;
-import company.model.Developer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +14,7 @@ public class AccountView {
 
     AccountController accountController = new AccountController();
 
-    Account account;
+    Account acc;
 
     public Account addAccount() {
         String read = "";
@@ -54,22 +54,22 @@ public class AccountView {
 
                 case "1":
 
-                   account= accountController.apdateAccount(AccountStatus.ACTIVE,account.getId());
+                   acc= accountController.apdateAccount(AccountStatus.ACTIVE,account.getId());
 
                     break;
                 case "2":
 
-                   account= accountController.apdateAccount(AccountStatus.BANNED,account.getId());
+                   acc= accountController.apdateAccount(AccountStatus.BANNED,account.getId());
                     break;
                 case "3":
 
-                   account= accountController.apdateAccount(AccountStatus.DELETED,account.getId());
+                   acc= accountController.apdateAccount(AccountStatus.DELETED,account.getId());
                     break;
             }
             break;
         }
 
-        return account;
+        return acc;
     }
 
     public void deleteAccount(Account account) {

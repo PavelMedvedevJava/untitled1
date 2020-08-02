@@ -1,92 +1,84 @@
 package company.repo.repoImpl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+
 import company.model.Developer;
+import company.model.Skill;
 import company.repo.DeveloperRepository;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class DeveloperRepositoryImpl implements DeveloperRepository {
 
     private long idcounter = 1;
 
-    private Path filePath = Paths.get("developer.json");
+    private Path filePath = Paths.get("dz\\src\\main\\resources\\developer.json");
 
-    private final String fileName = "developer.json";
-
-    private List<Developer> developersList = new ArrayList<>();
+    private final String fileName = "dz\\src\\main\\resources\\developer.json";
 
 
-    public List<Developer> getAllDeveloper() {
+    private List<Developer> developers;
 
-        if (!Files.exists(Paths.get(fileName))) {
-            try {
-                Files.createFile(Paths.get(fileName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    SkillRepositoryImpl skillRepository = new SkillRepositoryImpl();
 
-        Reader reader = null;
-        try {
-            reader = new FileReader(fileName);
-        } catch (FileNotFoundException e) {
-            return null;
-        }
-        Gson gson1 = new GsonBuilder().create();
-        developersList = gson1.fromJson(reader, new TypeToken<ArrayList<Developer>>() {
-        }.getType());
-        return developersList;
-    }
+    AccountRepositoryImpl accountRepository = new AccountRepositoryImpl();
 
-    @Override
-    public Developer create(Developer developer) {
+    Developer developer;
 
-        if (Files.exists(filePath)) {
+    private void cheakIsfile() {
 
-            try {
-                if (Files.size(filePath) > 5) {
-                    idcounter = getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-                    developer.setId(idcounter);
-                    developersList.add(developer);
-                } else {
-                    developer.setId(idcounter);
-                    idcounter++;
-                    developersList.add(developer);
-                }
+        if (!Files.exists(filePath)) {
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
             try {
                 Files.createFile(filePath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            developer.setId(idcounter);
-            idcounter++;
-            developersList.add(developer);
+        }
 
+    }
+
+
+    private List<Developer> getAllDeveloper() {
+
+       cheakIsfile();
+
+        return createToDeveloperList(readFile());
+
+    }
+
+    @Override
+    public Developer create(Developer developer) {
+        if (!Files.exists(filePath)) {
+
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(developersList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                if (Files.size(filePath) > 5) {
+                    idcounter = getAllDeveloper().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
+                    developer.setId(idcounter);
+                } else {
+                    developer.setId(idcounter);
+                    idcounter++;
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        writeOneDeveloper(developerToString(developer));
+
+
 
         return developer;
 
@@ -97,28 +89,23 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
         delete(developer.getId());
 
-        developersList.add(developer);
+        developers = getAllDeveloper();
 
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(developersList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        developers.add(developer);
+
+        writeAllDeveloper(createToStringList(developers));
+
         return developer;
     }
 
 
     @Override
     public void delete(Long id) {
-        developersList.removeIf(e -> e.getId() == id);
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(developersList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        developers = getAllDeveloper();
 
+        developers.removeIf(e -> e.getId() == id);
+
+        writeAllDeveloper(createToStringList(developers));
 
     }
 
@@ -131,7 +118,121 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Optional<Developer> read(Long id) {
-        return developersList.stream().filter(x -> x.getId() == id).findFirst();
+        return Objects.requireNonNull(getAllDeveloper()).stream().filter(x -> x.getId() == id).findFirst();
     }
+
+    private String developerToString(Developer developer) {
+        System.out.println(developer);
+        StringBuilder str = new StringBuilder();
+            str.append( developer.getName() + "-" + developer.getLastName() + "-"+developer.getId()+"-" + developer.getAccount().getId() + "-");
+
+        for (Skill sk : developer.getSkills()) {
+
+            str.append(sk.getId() + "-");
+        }
+
+        str.append('\n');
+
+        return str.toString();
+
+    }
+
+    private List<String> createToStringList(List<Developer> listDevelopers) {
+
+        List<String> stringList = new ArrayList<>();
+
+        listDevelopers.forEach(x->stringList.add(developerToString(x)));
+
+        return stringList;
+
+    }
+
+
+    private List<Developer> createToDeveloperList(List<String> stringList) {
+
+        List<Developer> developerList = new ArrayList<>();
+
+        stringList.forEach(x -> developerList.add(getingDeveloper(x)));
+
+        return developerList;
+    }
+
+    private List<String> readFile() {
+
+        List<String> stringList = new ArrayList<>();
+
+        cheakIsfile();
+
+            try {
+                stringList = Files.readAllLines(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        return stringList;
+    }
+
+    private void writeOneDeveloper(String developerString) {
+        try {
+            Files.write(filePath, developerString.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeAllDeveloper(List<String> stringList) {
+
+        try {
+            Files.newBufferedWriter(filePath , StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stringList.forEach(x -> {
+            try {
+                Files.write(filePath, x.getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    private Developer getingDeveloper(String stringDeveloper) {
+        String[] subStr;
+
+        String delimeter = "-";
+
+        subStr = stringDeveloper.split(delimeter);
+
+        developer = new Developer();
+
+        for (int i = 0; i < subStr.length; i++) {
+
+            if (i == 0) {
+                developer.setName(subStr[i]);
+
+            }
+            if (i == 1) {
+                developer.setLastName(subStr[i]);
+
+            }
+            if (i == 2) {
+                developer.setId(Long.parseLong(subStr[i]));
+            }
+                if (i == 3) {
+                developer.setAccount(accountRepository.read(Long.valueOf(subStr[i])).get());
+
+            } else if(i>3) {
+
+                developer.setSkill(skillRepository.read(Long.valueOf(subStr[i])).get());
+            }
+        }
+
+
+        return developer;
+    }
+
+
 
 }

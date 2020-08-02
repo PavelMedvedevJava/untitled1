@@ -5,12 +5,13 @@ import company.controller.DeveloperController;
 import company.model.Account;
 import company.model.Developer;
 import company.model.Skill;
+import company.repo.repoImpl.DeveloperRepositoryImpl;
 
 
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 public class DevelloperVIew {
     private DeveloperController developerController = new DeveloperController();
@@ -19,6 +20,7 @@ public class DevelloperVIew {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private AccountView accountView = new AccountView();
     private Developer developer;
+
 
 
 
@@ -70,8 +72,12 @@ public class DevelloperVIew {
 
             developer.setAccount(accountView.addAccount());
 
+        DeveloperRepositoryImpl developerRepository = new DeveloperRepositoryImpl();
 
-            System.out.println(developerController.addDeveloper(developer));
+        developerRepository.create(developer);
+
+
+
         }
 
 
@@ -99,9 +105,10 @@ public class DevelloperVIew {
     private void deleteDeveloper() {
 
         developer = viewDeveloper(indecateIdForCreate());
+        developerController.deletDeveloper(developer.getId());
         skillView.deleteSkill(developer.getSkills());
         accountView.deleteAccount(developer.getAccount());
-        developerController.deletDeveloper(developer.getId());
+
     }
 
     public void createDeveloper() {
@@ -152,6 +159,10 @@ public class DevelloperVIew {
 
     private void deleteSkillForDeveloper() {
         developer = viewDeveloper(indecateIdForCreate());
+        if (developer.getSkills().size()==1) {
+            System.out.println("the developer cannot have less than 1 skill");
+            createDeveloper();
+        }
         long id = skillView.deleteSkill(developer.getSkills());
         developer.getSkills().remove((developer.getSkills().stream().filter(x -> x.getId() == id).findAny().get()));
         developerController.apdateDeveloper(developer);
@@ -164,9 +175,11 @@ public class DevelloperVIew {
 }
 
     private void createAccountForDeveloper() {
+
         developer = viewDeveloper(indecateIdForCreate());
+
         developer.setAccount(accountView.createAccount(developer.getAccount()));
-        developerController.apdateDeveloper(developer);
+
     }
 
     private void createSkillDeveloper() {
@@ -184,16 +197,14 @@ public class DevelloperVIew {
 
 
             if ((developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null)) != null) {
+
+                Skill skill=developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null);
+
                 developer.getSkills().remove((developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().get()));
 
-
-Skill skill2=developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null);
-
-                Skill skill=skillView.createSkill(developer.getSkills().stream().filter(x -> x.getId() == idSkill).findFirst().orElse(null));
-
-                System.out.println(skill2);
-
                 developer.setSkill(skillView.createSkill(skill));
+
+                developerController.apdateDeveloper(developer);
 
             } else {
                 System.out.println("This skill does not exist please enter again");

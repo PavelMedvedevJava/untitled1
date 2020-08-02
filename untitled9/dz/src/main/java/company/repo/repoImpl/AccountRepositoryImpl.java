@@ -20,32 +20,16 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     private long idcounter = 1;
 
-    private final String fileName = "account.json";
+    private final String fileName = "dz\\src\\main\\resources\\account.json";
 
-    private Path filePath = Paths.get("account.json");
+    private Path filePath = Paths.get("dz\\src\\main\\resources\\account.json");
 
     private List<Account> accountList = new ArrayList<>();
 
 
     public Account create(Account account) {
-        if (Files.exists(filePath)) {
+        if (!Files.exists(filePath)) {
 
-            try {
-                if (Files.size(filePath) > 5) {
-                    idcounter = getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-                    account.setId(idcounter);
-                    accountList.add(account);
-                } else {
-                    account.setId(idcounter);
-                    idcounter++;
-                    accountList.add(account);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
             try {
                 Files.createFile(filePath);
             } catch (IOException e) {
@@ -55,20 +39,44 @@ public class AccountRepositoryImpl implements AccountRepository {
             idcounter++;
             accountList.add(account);
 
+
+
+        } else {
+
+            if (account.getId() == 0) {
+
+
+                try {
+
+                    if (Files.size(filePath) > 5) {
+                        idcounter = getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
+                        account.setId(idcounter);
+                        accountList.add(account);
+                    } else {
+                        account.setId(idcounter);
+                        idcounter++;
+                        accountList.add(account);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                accountList.add(account);
+            }
+
+
+            try (Writer writer = new FileWriter(String.valueOf(Paths.get(fileName)))) {
+                Gson gson = new GsonBuilder().create();
+                gson.toJson(accountList, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-
-
-        try (Writer writer = new FileWriter(String.valueOf(Paths.get(fileName)))) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(accountList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return account;
 
     }
+
 
     public Account update(Account account) {
 

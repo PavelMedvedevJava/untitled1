@@ -39,8 +39,6 @@ public class Main {
 
 
         DevelloperVIew develloperVIew = new DevelloperVIew();
-        SkillView skillView = new SkillView();
-        AccountView accountView = new AccountView();
 
         System.out.println("Welcome to Developer manager V1.0");
 
