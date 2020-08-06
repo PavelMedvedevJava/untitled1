@@ -1,4 +1,4 @@
-package company.repo.repoImpl;
+package company.repo.io;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
-    private long idcounter = 1;
+    private long idCounter = 1;
 
     private final String fileName = "dz\\src\\main\\resources\\account.json";
 
@@ -35,8 +35,8 @@ public class AccountRepositoryImpl implements AccountRepository {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            account.setId(idcounter);
-            idcounter++;
+            account.setId(idCounter);
+            idCounter++;
             accountList.add(account);
 
 
@@ -49,12 +49,12 @@ public class AccountRepositoryImpl implements AccountRepository {
                 try {
 
                     if (Files.size(filePath) > 5) {
-                        idcounter = getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-                        account.setId(idcounter);
+                        idCounter = getNewId();
+                        account.setId(idCounter);
                         accountList.add(account);
                     } else {
-                        account.setId(idcounter);
-                        idcounter++;
+                        account.setId(idCounter);
+                        idCounter++;
                         accountList.add(account);
                     }
 
@@ -75,6 +75,11 @@ public class AccountRepositoryImpl implements AccountRepository {
         }
         return account;
 
+    }
+
+
+    private Long getNewId() {
+        return getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
     }
 
 

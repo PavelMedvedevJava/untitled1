@@ -3,24 +3,23 @@ package company.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Skill  implements Serializable {
+public class Skill implements Serializable {
 
-    private String skil;
+    private String skill;
 
     private long id;
 
-    public Skill(String skil) {
+    public Skill(String skill) {
 
-        this.skil = skil;
+        this.skill = skill;
 
     }
 
     public Skill(String skill, long id) {
-        this.skil = skill;
-        this.id=id;
+        this.skill = skill;
+        this.id = id;
 
     }
-
 
     public long getId() {
         return id;
@@ -30,12 +29,8 @@ public class Skill  implements Serializable {
         this.id = id;
     }
 
-    public String getSkil() {
-        return skil;
-    }
-
-    public void setSkil(String skil) {
-        this.skil = skil;
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 
     @Override
@@ -44,16 +39,16 @@ public class Skill  implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Skill skill = (Skill) o;
         return id == skill.id &&
-                Objects.equals(skil, skill.skil);
+                Objects.equals(this.skill, skill.skill);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skil, id);
+        return Objects.hash(skill, id);
     }
 
     @Override
     public String toString() {
-        return id+" "+skil;
+        return id + " " + skill;
     }
 }

@@ -1,36 +1,31 @@
 package company.controller;
 
 import company.model.Skill;
-import company.repo.repoImpl.SkillRepositoryImpl;
-import java.util.Comparator;
+import company.repo.SkillRepository;
+import company.repo.io.SkillRepositoryImpl;
+
 import java.util.List;
-import java.util.Optional;
 
 public class SkillController {
 
 
-    private SkillRepositoryImpl skillRepository =new SkillRepositoryImpl();
+    private SkillRepository skillRepository =new SkillRepositoryImpl();
 
     public List<Skill> getAllSkill() {
-        return skillRepository.getAll();
+        return (List<Skill>) skillRepository.getAll();
     }
 
     public Skill addSkill(Skill skill ) {
         return skillRepository.create(skill);
     }
 
-    public void deletSkill(long id) {
+    public void deleteSkill(long id) {
         skillRepository.delete(id);
     }
 
-    public Skill apdateSkill(Skill skill) {
+    public Skill updateSkill(Skill skill) {
        return skillRepository.update(skill);
     }
-
-    public Optional<Skill> getSkill(long id ) {
-        return skillRepository.read(id);
-    }
-
 
 }
 

@@ -1,9 +1,11 @@
-package company.repo.repoImpl;
+package company.repo.io;
 
 
 import company.model.Developer;
 import company.model.Skill;
+import company.repo.AccountRepository;
 import company.repo.DeveloperRepository;
+import company.repo.SkillRepository;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,22 +16,20 @@ import java.util.*;
 
 public class DeveloperRepositoryImpl implements DeveloperRepository {
 
-    private long idcounter = 1;
+    private long idCounter = 1;
 
     private Path filePath = Paths.get("dz\\src\\main\\resources\\developer.json");
-
-    private final String fileName = "dz\\src\\main\\resources\\developer.json";
 
 
     private List<Developer> developers;
 
-    SkillRepositoryImpl skillRepository = new SkillRepositoryImpl();
+    private SkillRepository skillRepository = new SkillRepositoryImpl();
 
-    AccountRepositoryImpl accountRepository = new AccountRepositoryImpl();
+    private AccountRepository accountRepository = new AccountRepositoryImpl();
 
-    Developer developer;
+    private Developer developer;
 
-    private void cheakIsfile() {
+    private void fileCheck() {
 
         if (!Files.exists(filePath)) {
 
@@ -45,7 +45,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
     private List<Developer> getAllDeveloper() {
 
-       cheakIsfile();
+       fileCheck();
 
         return createToDeveloperList(readFile());
 
@@ -65,11 +65,11 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
             try {
                 if (Files.size(filePath) > 5) {
-                    idcounter = getAllDeveloper().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-                    developer.setId(idcounter);
+                    idCounter = getNewId();
+                    developer.setId(idCounter);
                 } else {
-                    developer.setId(idcounter);
-                    idcounter++;
+                    developer.setId(idCounter);
+                    idCounter++;
 
                 }
 
@@ -121,6 +121,11 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
         return Objects.requireNonNull(getAllDeveloper()).stream().filter(x -> x.getId() == id).findFirst();
     }
 
+
+    private Long getNewId() {
+        return getAllDeveloper().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
+    }
+
     private String developerToString(Developer developer) {
         System.out.println(developer);
         StringBuilder str = new StringBuilder();
@@ -152,7 +157,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
         List<Developer> developerList = new ArrayList<>();
 
-        stringList.forEach(x -> developerList.add(getingDeveloper(x)));
+        stringList.forEach(x -> developerList.add(getDeveloper(x)));
 
         return developerList;
     }
@@ -161,7 +166,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
         List<String> stringList = new ArrayList<>();
 
-        cheakIsfile();
+        fileCheck();
 
             try {
                 stringList = Files.readAllLines(filePath);
@@ -198,12 +203,12 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
     }
 
-    private Developer getingDeveloper(String stringDeveloper) {
+    private Developer getDeveloper(String stringDeveloper) {
         String[] subStr;
 
-        String delimeter = "-";
+        String delimiter = "-";
 
-        subStr = stringDeveloper.split(delimeter);
+        subStr = stringDeveloper.split(delimiter);
 
         developer = new Developer();
 

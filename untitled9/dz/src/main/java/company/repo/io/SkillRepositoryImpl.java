@@ -1,4 +1,4 @@
-package company.repo.repoImpl;
+package company.repo.io;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SkillRepositoryImpl implements SkillRepository {
 
-    private long idcounter = 1;
+    private long idCounter = 1;
 
     private Path filePath = Paths.get("dz\\src\\main\\resources\\skills.json");
 
@@ -32,6 +32,7 @@ public class SkillRepositoryImpl implements SkillRepository {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
 
@@ -55,12 +56,12 @@ public class SkillRepositoryImpl implements SkillRepository {
 
             try {
                 if (Files.size(filePath) > 5) {
-                    idcounter = getAllSkill().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
-                    skill.setId(idcounter);
+                    idCounter = getNewId();
+                    skill.setId(idCounter);
                     listOfSkills.add(skill);
                 } else {
-                    skill.setId(idcounter);
-                    idcounter++;
+                    skill.setId(idCounter);
+                    idCounter++;
                     listOfSkills.add(skill);
                 }
 
@@ -74,8 +75,8 @@ public class SkillRepositoryImpl implements SkillRepository {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            skill.setId(idcounter);
-            idcounter++;
+            skill.setId(idCounter);
+            idCounter++;
             listOfSkills.add(skill);
 
         }
@@ -128,6 +129,10 @@ public class SkillRepositoryImpl implements SkillRepository {
     public Optional<Skill> read(Long id) {
         return Objects.requireNonNull(getAllSkill().stream().filter(x -> x.getId() == id).findFirst());
 
+    }
+
+    private Long getNewId() {
+       return getAllSkill().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
     }
 
 

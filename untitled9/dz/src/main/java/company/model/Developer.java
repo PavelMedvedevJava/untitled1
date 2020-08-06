@@ -1,7 +1,6 @@
 package company.model;
 
 
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,18 +12,18 @@ public class Developer implements Serializable {
 
     private long id;
 
-    private  String name;
+    private String name;
 
     private String lastName;
 
-  private   Set<Skill> skills=new HashSet<>();
+    private Set<Skill> skills = new HashSet<>();
 
-   private   Account account;
+    private Account account;
 
     public Developer(long id, String name, String lastName, Set<Skill> skills, Account account) {
         this.name = name;
         this.lastName = lastName;
-        this.id=id;
+        this.id = id;
         this.skills = skills;
         this.account = account;
     }
@@ -76,9 +75,6 @@ public class Developer implements Serializable {
         return skills;
     }
 
-    public void setSkills(Set<Skill> skills) {
-        this.skills = skills;
-    }
 
     public void setSkill(Skill skill) {
         skills.add(skill);

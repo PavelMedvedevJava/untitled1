@@ -2,9 +2,7 @@ package company;
 
 
 
-import company.view.AccountView;
-import company.view.DevelloperVIew;
-import company.view.SkillView;
+import company.view.DeveloperVIew;
 
 import java.io.*;
 
@@ -30,22 +28,20 @@ import java.io.*;
 
 
 
-// Когда я начинал это писать, только Бог и я понимали, что я делаю
-// Сейчас остался только Бог
 public class Main {
 
     public static void main(String[] args) {
       
 
 
-        DevelloperVIew develloperVIew = new DevelloperVIew();
+        DeveloperVIew developerVIew = new DeveloperVIew();
 
         System.out.println("Welcome to Developer manager V1.0");
 
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));){
 
-//Когда нибудь мне будет жутко стыдно за этот код , а пока я очень хочу спать )
+
             while (true) {
                 System.out.println(" Choose your destiny"+System.lineSeparator()+"New developer pres 1"
                         +System.lineSeparator()+"loock all developers - press 2  "
@@ -55,13 +51,13 @@ public class Main {
                 String read = reader.readLine();
                 switch (read) {
                     case "1":
-                        develloperVIew.addNewDevelloper();
+                        developerVIew.addNewDeveloper();
                         break;
                     case "2":
-                        develloperVIew.showAllDevellopers();
+                        developerVIew.showAllDevelopers();
                         break;
                     case "3":
-                        develloperVIew.createDeveloper();
+                        developerVIew.createDeveloper();
                         break;
                     case "0":
 

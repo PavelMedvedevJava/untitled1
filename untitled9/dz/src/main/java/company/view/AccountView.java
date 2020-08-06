@@ -12,9 +12,9 @@ import java.io.InputStreamReader;
 public class AccountView {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    AccountController accountController = new AccountController();
+    private AccountController accountController = new AccountController();
 
-    Account acc;
+    private Account acc;
 
     public Account addAccount() {
         String read = "";
@@ -54,16 +54,16 @@ public class AccountView {
 
                 case "1":
 
-                   acc= accountController.apdateAccount(AccountStatus.ACTIVE,account.getId());
+                   acc= accountController.updateAccount(AccountStatus.ACTIVE,account.getId());
 
                     break;
                 case "2":
 
-                   acc= accountController.apdateAccount(AccountStatus.BANNED,account.getId());
+                   acc= accountController.updateAccount(AccountStatus.BANNED,account.getId());
                     break;
                 case "3":
 
-                   acc= accountController.apdateAccount(AccountStatus.DELETED,account.getId());
+                   acc= accountController.updateAccount(AccountStatus.DELETED,account.getId());
                     break;
             }
             break;
@@ -73,6 +73,6 @@ public class AccountView {
     }
 
     public void deleteAccount(Account account) {
-        accountController.deletAccount(account.getId());
+        accountController.deleteAccount(account.getId());
     }
 }

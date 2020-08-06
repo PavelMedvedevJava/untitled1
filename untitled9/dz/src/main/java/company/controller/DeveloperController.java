@@ -1,7 +1,8 @@
 package company.controller;
 
 import company.model.Developer;
-import company.repo.repoImpl.DeveloperRepositoryImpl;
+import company.repo.DeveloperRepository;
+import company.repo.io.DeveloperRepositoryImpl;
 
 
 import java.util.List;
@@ -10,26 +11,18 @@ import java.util.Optional;
 
 public class DeveloperController {
 
-    private Developer dev;
-
-    private long idcounter = 1;
-
-    private DeveloperRepositoryImpl developerRepository = new DeveloperRepositoryImpl();
+    private DeveloperRepository developerRepository = new DeveloperRepositoryImpl();
 
     public List<Developer> getAllDev() {
-        return developerRepository.getAll();
+        return (List<Developer>) developerRepository.getAll();
     }
 
-    public Developer addDeveloper(Developer developer) {
 
-        return developerRepository.create(developer);
-    }
-
-    public void deletDeveloper(long id) {
+    public void deleteDeveloper(long id) {
         developerRepository.delete(id);
     }
 
-    public Developer apdateDeveloper(Developer developer) {
+    public Developer updateDeveloper(Developer developer) {
        return developerRepository.update(developer);
     }
 

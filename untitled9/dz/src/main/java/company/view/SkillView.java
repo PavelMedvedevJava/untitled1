@@ -35,12 +35,6 @@ public class SkillView {
 
     }
 
-    public List<Skill> getAllSkills() {
-       return skillController.getAllSkill();
-
-
-    }
-
     public long deleteSkill(Set<Skill> skillSet) {
         skillSet.forEach(System.out::println);
         while (true) {
@@ -51,7 +45,7 @@ public class SkillView {
                 if ((skillSet.stream().filter(x -> x.getId() == idForDelete).findFirst().orElse(null)) == null) {
                     System.out.println("This skill does not exist please enter again");
                 } else {
-                    skillController.deletSkill(idForDelete);
+                    skillController.deleteSkill(idForDelete);
                     return idForDelete;
                 }
 
@@ -78,8 +72,8 @@ public class SkillView {
             }
 
         }
-skill.setSkil(newSkill);
-       return skillController.apdateSkill(skill);
+skill.setSkill(newSkill);
+       return skillController.updateSkill(skill);
     }
 }
 

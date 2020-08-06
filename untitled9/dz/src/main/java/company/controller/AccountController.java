@@ -2,33 +2,29 @@ package company.controller;
 
 import company.model.Account;
 import company.model.AccountStatus;
-import company.repo.repoImpl.AccountRepositoryImpl;
+import company.repo.AccountRepository;
+import company.repo.io.AccountRepositoryImpl;
 
 
 
-import java.util.List;
+
 import java.util.Optional;
 
 public class AccountController {
 
+    private AccountRepository accountRepository =new AccountRepositoryImpl() ;
 
-
-    private AccountRepositoryImpl accountRepository =new AccountRepositoryImpl() ;
-
-    public List<Account> getAllAccount() {
-        return accountRepository.getAll();
-    }
 
     public Account addAccount(Account account) {
 
         return accountRepository.create(account);
     }
 
-    public void deletAccount(long id) {
+    public void deleteAccount(long id) {
         accountRepository.delete(id);
     }
 
-    public Account apdateAccount(AccountStatus accountStatus  , long id) {
+    public Account updateAccount(AccountStatus accountStatus  , long id) {
         return  accountRepository.update(new Account(accountStatus,id));
     }
 

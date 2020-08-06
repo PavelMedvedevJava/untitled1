@@ -5,7 +5,7 @@ import company.controller.DeveloperController;
 import company.model.Account;
 import company.model.Developer;
 import company.model.Skill;
-import company.repo.repoImpl.DeveloperRepositoryImpl;
+import company.repo.io.DeveloperRepositoryImpl;
 
 
 import java.io.*;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class DevelloperVIew {
+public class DeveloperVIew {
     private DeveloperController developerController = new DeveloperController();
     private AccountController accountController = new AccountController();
     private SkillView skillView = new SkillView();
@@ -22,10 +22,7 @@ public class DevelloperVIew {
     private Developer developer;
 
 
-
-
-
-    public void addNewDevelloper() {
+    public void addNewDeveloper() {
 
 
         String name = "";
@@ -51,37 +48,35 @@ public class DevelloperVIew {
         }
 
 
-            developer = new Developer(name,lastName);
+        developer = new Developer(name, lastName);
 
 
+        developer.setSkill(skillView.addNewSkill());
 
-            developer.setSkill(skillView.addNewSkill());
-
-            while (!false) {
-                System.out.println("Add more skills?");
-                System.out.println("Write Yes or No");
-                try {
-                    if (reader.readLine().equalsIgnoreCase("Yes")) {
-                        developer.setSkill(skillView.addNewSkill());
-                    }
-                    break;
-                } catch (IOException e) {
-                    e.printStackTrace();
+        while (!false) {
+            System.out.println("Add more skills?");
+            System.out.println("Write Yes or No");
+            try {
+                if (reader.readLine().equalsIgnoreCase("Yes")) {
+                    developer.setSkill(skillView.addNewSkill());
                 }
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-            developer.setAccount(accountView.addAccount());
+        developer.setAccount(accountView.addAccount());
 
         DeveloperRepositoryImpl developerRepository = new DeveloperRepositoryImpl();
 
         developerRepository.create(developer);
 
 
+    }
 
-        }
 
-
-    public List<Developer> showAllDevellopers() {
+    public List<Developer> showAllDevelopers() {
 
 
         List<Developer> developersList;
@@ -104,8 +99,8 @@ public class DevelloperVIew {
 
     private void deleteDeveloper() {
 
-        developer = viewDeveloper(indecateIdForCreate());
-        developerController.deletDeveloper(developer.getId());
+        developer = viewDeveloper(indicateIdForCreate());
+        developerController.deleteDeveloper(developer.getId());
         skillView.deleteSkill(developer.getSkills());
         accountView.deleteAccount(developer.getAccount());
 
@@ -158,25 +153,25 @@ public class DevelloperVIew {
     }
 
     private void deleteSkillForDeveloper() {
-        developer = viewDeveloper(indecateIdForCreate());
-        if (developer.getSkills().size()==1) {
+        developer = viewDeveloper(indicateIdForCreate());
+        if (developer.getSkills().size() == 1) {
             System.out.println("the developer cannot have less than 1 skill");
             createDeveloper();
         }
         long id = skillView.deleteSkill(developer.getSkills());
         developer.getSkills().remove((developer.getSkills().stream().filter(x -> x.getId() == id).findAny().get()));
-        developerController.apdateDeveloper(developer);
+        developerController.updateDeveloper(developer);
     }
 
     private void addSkillForDeveloper() {
-        developer = viewDeveloper(indecateIdForCreate());
+        developer = viewDeveloper(indicateIdForCreate());
         developer.setSkill(skillView.addNewSkill());
-        developerController.apdateDeveloper(developer);
-}
+        developerController.updateDeveloper(developer);
+    }
 
     private void createAccountForDeveloper() {
 
-        developer = viewDeveloper(indecateIdForCreate());
+        developer = viewDeveloper(indicateIdForCreate());
 
         developer.setAccount(accountView.createAccount(developer.getAccount()));
 
@@ -185,7 +180,7 @@ public class DevelloperVIew {
     private void createSkillDeveloper() {
 
 
-        developer = viewDeveloper(indecateIdForCreate());
+        developer = viewDeveloper(indicateIdForCreate());
 
         System.out.println("What skill do you change ?");
 
@@ -198,13 +193,13 @@ public class DevelloperVIew {
 
             if ((developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null)) != null) {
 
-                Skill skill=developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null);
+                Skill skill = developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().orElse(null);
 
                 developer.getSkills().remove((developer.getSkills().stream().filter(x -> x.getId() == idSkill).findAny().get()));
 
                 developer.setSkill(skillView.createSkill(skill));
 
-                developerController.apdateDeveloper(developer);
+                developerController.updateDeveloper(developer);
 
             } else {
                 System.out.println("This skill does not exist please enter again");
@@ -218,7 +213,7 @@ public class DevelloperVIew {
     private void createNameDeveloper() {
 
 
-        developer = viewDeveloper(indecateIdForCreate());
+        developer = viewDeveloper(indicateIdForCreate());
 
         System.out.println("write a new name");
 
@@ -238,18 +233,18 @@ public class DevelloperVIew {
             e.printStackTrace();
         }
 
-        developerController.apdateDeveloper(new Developer(developer.getId(), newName, newLastName, developer.getSkills(), developer.getAccount()));
+        developerController.updateDeveloper(new Developer(developer.getId(), newName, newLastName, developer.getSkills(), developer.getAccount()));
 
     }
 
-    private long indecateIdForCreate() {
+    private long indicateIdForCreate() {
 
-        showAllDevellopers();
+        showAllDevelopers();
         while (true) {
             System.out.println("Please indicate the developer you want to create");
 
             try {
-              long  idForCreate = Integer.parseInt(reader.readLine());
+                long idForCreate = Integer.parseInt(reader.readLine());
                 return idForCreate;
 
             } catch (IOException e) {
@@ -263,7 +258,7 @@ public class DevelloperVIew {
 
     public Developer viewDeveloper(Long id) {
 
-            return developerController.getDeveloper(id).get();
+        return developerController.getDeveloper(id).get();
 
     }
 }
